@@ -198,3 +198,73 @@ void front_back_split(struct node* source, struct node** frontRef, struct node**
     slow->next = NULL;
 }
 
+struct node* reverse(struct node* list) {
+    struct node* newlist = NULL;
+    struct node* current = list;
+    struct node* next = NULL;
+
+    while (current != NULL) {
+        next = current->next; // Store next node
+        current->next = newlist; // Reverse current node's pointer
+        newlist = current;       // Move pointers one position ahead
+        current = next;
+    }
+
+    return newlist;
+}
+
+struct node* sorted_merge(struct node* a, struct node* b) {
+    struct node* result = NULL;
+
+    // Base cases
+    if (a == NULL)
+        return b;
+    else if (b == NULL)
+        return a;
+
+    // Pick either a or b, and recur
+    if (a->data <= b->data) {
+        result = a;
+        result->next = sorted_merge(a->next, b);
+    } else {
+        result = b;
+        result->next = sorted_merge(a, b->next);
+    }
+
+    return result;
+}
+
+void move_node(struct node** sourceRef, struct node** desRef) {
+    assert(sourceRef != NULL && destRef != NULL);
+    if (*sourceRef == NULL) {
+        return;
+    }
+
+    struct node* cur_src = *sourceRef;
+    *sourceRef = cur_src->next;
+    cur_src->next = *desRef;
+    *desRef = cur_src;
+}
+
+void remove_duplicates(struct node* source) {
+    if(source == NULL || source->next == NULL) {
+        return;
+    }
+
+    struct node* curr = source;
+    struct node* next_node = source->next;
+
+    while(next != NULL) {
+        if(next_node->data == curr->data) {
+            curr->next = next_node->next;
+            next_node->next = NULL;
+            free(next_node);
+
+            next_node = curr->next;
+            continue;
+        }
+        curr = next_node;
+        next_node = curr->next;
+    }
+}
+
